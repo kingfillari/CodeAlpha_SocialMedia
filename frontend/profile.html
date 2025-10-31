@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - CodeAlpha Social Media</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h2><i class="fas fa-users"></i> CodeAlpha Social</h2>
+            </div>
+            <div class="nav-search">
+                <input type="text" id="searchInput" placeholder="Search users...">
+                <button onclick="searchUsers()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <a href="profile.html" class="nav-link active"><i class="fas fa-user"></i> Profile</a>
+                <a href="#" class="nav-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-cover">
+                <div class="cover-photo"></div>
+                <div class="profile-info">
+                    <div class="avatar-section">
+                        <img id="profileAvatar" src="https://via.placeholder.com/150" alt="Profile Avatar" class="avatar-large">
+                        <button class="edit-avatar-btn" onclick="editAvatar()">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <div class="profile-details">
+                        <h1 id="profileName">User Name</h1>
+                        <p id="profileBio">This is my bio. I can write something about myself here.</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <strong id="profilePostsCount">0</strong>
+                                <span>Posts</span>
+                            </div>
+                            <div class="stat">
+                                <strong id="profileFollowersCount">0</strong>
+                                <span>Followers</span>
+                            </div>
+                            <div class="stat">
+                                <strong id="profileFollowingCount">0</strong>
+                                <span>Following</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button id="editProfileBtn" class="btn-primary" onclick="editProfile()">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </button>
+                            <button id="followBtn" class="btn-secondary" style="display: none;" onclick="toggleFollow()">
+                                Follow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <!-- Profile Navigation -->
+            <div class="profile-nav">
+                <button class="nav-tab active" onclick="showTab('posts')">Posts</button>
+                <button class="nav-tab" onclick="showTab('about')">About</button>
+                <button class="nav-tab" onclick="showTab('followers')">Followers</button>
+                <button class="nav-tab" onclick="showTab('following')">Following</button>
+            </div>
+
+            <!-- Posts Tab -->
+            <div id="postsTab" class="tab-content active">
+                <div class="user-posts">
+                    <div id="userPosts">
+                        <div class="loading">Loading posts...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Tab -->
+            <div id="aboutTab" class="tab-content">
+                <div class="about-card">
+                    <h3>About</h3>
+                    <div class="about-info">
+                        <div class="info-item">
+                            <i class="fas fa-user"></i>
+                            <div>
+                                <strong>Username</strong>
+                                <p id="aboutUsername">username</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Email</strong>
+                                <p id="aboutEmail">user@example.com</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Location</strong>
+                                <p id="aboutLocation">Not specified</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-globe"></i>
+                            <div>
+                                <strong>Website</strong>
+                                <p id="aboutWebsite">Not specified</p>
+                            </div>
+                        </div>
+                        <div class="info-item full-width">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <strong>Bio</strong>
+                                <p id="aboutBio">No bio yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Followers Tab -->
+            <div id="followersTab" class="tab-content">
+                <div class="followers-list">
+                    <div id="followersContainer">
+                        <div class="loading">Loading followers...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Following Tab -->
+            <div id="followingTab" class="tab-content">
+                <div class="following-list">
+                    <div id="followingContainer">
+                        <div class="loading">Loading following...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="editFirstName">First Name</label>
+                        <input type="text" id="editFirstName" name="firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Last Name</label>
+                        <input type="text" id="editLastName" name="lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editBio">Bio</label>
+                        <textarea id="editBio" name="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLocation">Location</label>
+                        <input type="text" id="editLocation" name="location" placeholder="Your city/country">
+                    </div>
+                    <div class="form-group">
+                        <label for="editWebsite">Website</label>
+                        <input type="url" id="editWebsite" name="website" placeholder="https://example.com">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/posts.js"></script>
+</body>
+</html>
